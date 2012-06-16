@@ -16,8 +16,6 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="..\..\..\..\as3corelib\src" />
-    <class path="..\..\..\..\flixel" />
   </classpaths>
   <!-- Build options -->
   <build>

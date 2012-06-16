@@ -35,10 +35,10 @@ package
 			super.update();
 
 			if(FlxG.mouse.justPressed())
-				FlxG.state=new PlayState(5);
+				FlxG.state=new PlayState(1);
 			
 			if (FlxG.keys.any()) {
-				FlxG.state=new PlayState(5);
+				FlxG.state=new PlayState(1);
 				
 			}
 		}
