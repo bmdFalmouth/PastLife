@@ -10,22 +10,6 @@ package
 	
 	public class PlayState extends FlxState
 	{
-		// Tileset that works with AUTO mode (best for thin walls)
-		[Embed(source = '../assets/auto_tiles.png')]private static var auto_tiles:Class;
-		
-		// Tileset that works with ALT mode (best for thicker walls)
-		[Embed(source = '../assets/alt_tiles.png')]private static var alt_tiles:Class;
-		
-		// Tileset that works with OFF mode (do what you want mode)
-		[Embed(source = '../assets/empty_tiles.png')]private static var empty_tiles:Class;
-		
-		// Default tilemaps. Embedding text files is a little weird.
-		[Embed(source = '../assets/default_auto.txt', mimeType = 'application/octet-stream')]private static var default_auto:Class;
-		[Embed(source = '../assets/default_alt.txt', mimeType = 'application/octet-stream')]private static var default_alt:Class;
-		[Embed(source = '../assets/default_empty.txt', mimeType = 'application/octet-stream')]private static var default_empty:Class;
-		
-		[Embed(source="../assets/spaceman.png")] private static var ImgSpaceman:Class;
-		[Embed(source="../assets/gib.png")] private static var ImgGibs:Class;
 		
 		
 		// graphics
@@ -100,8 +84,6 @@ package
 		
 		
 		private var sacrificeText:FlxText;
-		
-		protected var _littleGibs:FlxEmitter;
 		
 		public var tutorialTriggers : Array;
 		public var levels:Array;
@@ -276,30 +258,7 @@ package
 			pickupScoreDisplay=new FlxGroup();
 			
 			ambientPlayback = new FlxSound();
-			
-			/*mcLoader = new Loader(); 
-			var url : URLRequest = new URLRequest("../assets/fg_ParticleVideo.swf");
-			mcLoader.load(url);
-			FlxG.stage.addChild(mcLoader);
-			mcLoader.y = 100;	
-			mcLoader.blendMode = "screen";
-			mcLoader.scaleX = mcLoader.scaleY = 2;*/
-			
 			FlxG.framerate = 50;
-			//Not needed?
-			//FlxG.flashFramerate = 50;
-			
-			_littleGibs = new FlxEmitter();
-			_littleGibs.setXSpeed(-150,150);
-			_littleGibs.setYSpeed(-200,0);
-			_littleGibs.setRotation(-720,-720);
-			_littleGibs.gravity = 350;
-			//_littleGibs.bounce = 0.5;
-			_littleGibs.createSprites(ImgGibs, 100, 10, true, 0.5);
-			//_littleGibs.makeParticles(ImgGibs,100,10,true,0.5);
-			
-			// removing the gibs from the explosion because it sucks
-			// add(_littleGibs);  
 			
 			// add background gradient
 			gradientA = new FlxSprite(0,0, BgGradientA);
@@ -346,33 +305,6 @@ package
 			
 			
 			explosions = new FlxGroup();
-			// Creates a new tilemap with no arguments
-			//collisionMap = new FlxTilemap();
-			
-			/*
-			* FlxTilemaps are created using strings of comma seperated values (csv)
-			* This string ends up looking something like this:
-			*
-			* 0,0,0,0,0,0,0,0,0,0,
-			* 0,0,0,0,0,0,0,0,0,0,
-			* 0,0,0,0,0,0,1,1,1,0,
-			* 0,0,1,1,1,0,0,0,0,0,
-			* ...
-			*
-			* Each '0' stands for an empty tile, and each '1' stands for
-			* a solid tile
-			*
-			* When using the auto map generation, the '1's are converted into the corresponding frame
-			* in the tileset.
-			*/
-			
-			// Initializes the map using the generated string, the tile images, and the tile size
-			/*
-			collisionMap.loadMap(new default_auto(), auto_tiles, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.AUTO);
-			add(collisionMap);
-			
-			highlightBox = new FlxObject(0, 0, TILE_WIDTH, TILE_HEIGHT);
-			*/
 			
 			fgMist = new FlxSprite(0, 0, FgMistClass);
 			fgMist.blend = "screen";
@@ -387,82 +319,6 @@ package
 			fgInverseVignette.blend = "screen";
 			fgInverseVignette.alpha = 1;
 			add(fgInverseVignette);
-			
-		
-			
-			
-			// fgLetterbox = new FlxSprite(0, 0, FgLetterboxClass);
-			// add(fgLetterbox);
-			
-			
-			/*
-			// When switching between modes here, the map is reloaded with it's own data, so the positions of tiles are kept the same
-			// Notice that different tilesets are used when the auto mode is switched
-			autoAltBtn = new FlxButton(4, FlxG.height - 24, "AUTO", function():void
-			{
-			switch(collisionMap.auto)
-			{
-			case FlxTilemap.AUTO:
-			collisionMap.loadMap(FlxTilemap.arrayToCSV(collisionMap.getData(true), collisionMap.widthInTiles),
-			alt_tiles, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.ALT);
-			autoAltBtn.label.text = "ALT";
-			break;
-			
-			case FlxTilemap.ALT:
-			collisionMap.loadMap(FlxTilemap.arrayToCSV(collisionMap.getData(true), collisionMap.widthInTiles),
-			empty_tiles, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
-			autoAltBtn.label.text = "OFF";
-			break;
-			
-			case FlxTilemap.OFF:
-			collisionMap.loadMap(FlxTilemap.arrayToCSV(collisionMap.getData(true), collisionMap.widthInTiles),
-			auto_tiles, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.AUTO);
-			autoAltBtn.label.text = "AUTO";
-			break;
-			}
-			
-			});
-			add(autoAltBtn);
-			
-			//TEST
-			resetBtn = new FlxButton(8 + autoAltBtn.width, FlxG.height - 24, "Reset", function():void
-			{
-			switch(collisionMap.auto)
-			{
-			case FlxTilemap.AUTO:
-			collisionMap.loadMap(new default_auto(), auto_tiles, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.AUTO);
-			player.x = 64;
-			player.y = 220;
-			break;
-			
-			case FlxTilemap.ALT:
-			collisionMap.loadMap(new default_alt(), alt_tiles, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.ALT);
-			player.x = 64;
-			player.y = 128;
-			break;
-			
-			case FlxTilemap.OFF:
-			collisionMap.loadMap(new default_empty(), empty_tiles, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
-			player.x = 64;
-			player.y = 64;
-			break;
-			}
-			});
-			add(resetBtn);
-			
-			quitBtn = new FlxButton(FlxG.width - resetBtn.width - 4, FlxG.height - 24, "Quit",
-			function():void { FlxG.fade(0xff000000, 0.22, function():void { FlxG.switchState(new MenuState()); } ); } );
-			add(quitBtn);
-			
-			helperTxt = new FlxText(12 + autoAltBtn.width*2, FlxG.height - 30, 150, "Click to place tiles\nShift-Click to remove tiles\nArrow keys to move");
-			add(helperTxt);*/
-			
-			// camera tint
-			
-			//var cam:FlxCamera = new FlxCamera(0,0, FlxG.width, FlxG.height); // we put the first one in the top left corner
-			// this sets the limits of where the camera goes so that it doesn't show what's outside of the tilemap
-			//cam.setBounds(0,0,FlxG.width, FlxG.height);
-			//FlxG.addCamera(cam);
 			
 			
 			// initialise stats
@@ -577,46 +433,27 @@ package
 		
 		override public function update():void
 		{
-			// Tilemaps can be collided just like any other FlxObject, and flixel
-			// automatically collides each individual tile with the object.
-			//if (!endLevel){
-				FlxU.collide(player, collisionMap);
-				FlxU.overlap(player, trees, climbTree);
-				FlxU.collide(trees, collisionMap);
-				FlxU.overlap(player,pickups,HandlePickUps);
+			FlxU.collide(player, collisionMap);
+			FlxU.overlap(player, trees, climbTree);
+			FlxU.collide(trees, collisionMap);
+			FlxU.overlap(player,pickups,HandlePickUps);
 			
-				for each(var t:TutorialTrigger in tutorialTriggers)
-				{
-					if (player.overlaps(t))
-					{
-						t.ShowMessage();					
-					}
-					else
-					{
-						t.HideMessage();
-					}
-				}
-				
-				if(player.overlaps(exit) && !exitTransition)
-				{
-					//FlxG.switchState(new MenuState());
-					OnEndLevel();
-				}
-			//}
-			
-			/*
-			//TODO: For Create block to get tile location when you die!!!
-			//Change mouse to player position, move this into player
-			highlightBox.x = Math.floor(FlxG.mouse.x / TILE_WIDTH) * TILE_WIDTH;
-			highlightBox.y = Math.floor(FlxG.mouse.y / TILE_HEIGHT) * TILE_HEIGHT;
-			
-			if (FlxG.mouse.pressed())
+			for each(var t:TutorialTrigger in tutorialTriggers)
 			{
-			// FlxTilemaps can be manually edited at runtime as well.
-			// Setting a tile to 0 removes it, and setting it to anything else will place a tile.
-			// If auto map is on, the map will automatically update all surrounding tiles.
-			collisionMap.setTile(FlxG.mouse.x / TILE_WIDTH, FlxG.mouse.y / TILE_HEIGHT, FlxG.keys.SHIFT?0:1);
-			}*/
+				if (player.overlaps(t))
+				{
+					t.ShowMessage();					
+				}
+				else
+				{
+					t.HideMessage();
+				}
+			}
+				
+			if(player.overlaps(exit) && !exitTransition)
+			{
+				OnEndLevel();
+			}
 			
 			super.update();
 		}
@@ -624,11 +461,8 @@ package
 		public function HandlePickUps(p:Player, pUp:Pickup):void
 		{
 			FlxG.play(pickUpSound);
-			
 			pUp.kill();
-			
 			statsTracker.increment("pickups");
-			//TODO: Handle pickup logic, give some kind of metric
 		}
 		
 		public function climbTree(p:Player, treeToClimb:Tree):void
@@ -645,18 +479,12 @@ package
 				//BUG: This leaves the last animation of the tree, which has the character at the top
 				player.climbTree(treeToClimb);
 			}
-			//player.canClimb = true;
-			//player.treeToClimb = treeToClimb;
-			
-			
 		}
 
 		public function plantTreeFirmly(tree:Tree, m:FlxTilemap):void
 		{
-			//tree.immovable = true;
 			tree.active = false;
 			tree.acceleration.y = 0;
-		
 		}
 		
 		public function killTrees(X:Number, Y:Number):void
@@ -693,10 +521,7 @@ package
 		
 		private function setupPlayer():void
 		{
-			//player = new Player(64, 220);
 			player.setTileMap(collisionMap);
-			player.setGibEmitter(_littleGibs);
-			//add(player);
 		}
 		
 		public function addTree(tree:Tree):void
