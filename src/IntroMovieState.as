@@ -46,7 +46,7 @@ package
 			if (!exit) {
 				exit = true;
 				//BUG - This leaves the camera very zoomed in
-				FlxG.state=new MenuState(m_swf);
+				FlxG.switchState(new MenuState(m_swf));
 			}
 		}
 		//----------------------------------------------------------------------
