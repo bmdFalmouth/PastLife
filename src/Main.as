@@ -10,7 +10,6 @@ package
 		{
 			//Uncomment for Intro
 			//super(1280, 720, IntroMovieState);
-			//super(1280, 720, MenuState, 1, 60, 30);
 			//Get into menu state
 			super(1280, 720, MenuState, 1);
 		}

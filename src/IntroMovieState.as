@@ -27,7 +27,11 @@ package
 			timer.addEventListener(TimerEvent.TIMER, nextScene);
 			
 			timer.start();
-			
+		}
+		
+		override public function create():void 
+		{
+			super.create();
 			m_swf = new SwfClass();
 			m_swf.x = 0;
 			m_swf.y = 0;
@@ -35,13 +39,13 @@ package
 			m_swf.addEventListener(MouseEvent.MOUSE_DOWN, nextScene);
 			
 			
-			FlxG.stage.addChild(m_swf);
-			
+			FlxG.stage.addChild(m_swf);			
 		}
 		
 		public function nextScene( e : Event) : void {
 			if (!exit) {
 				exit = true;
+				//BUG - This leaves the camera very zoomed in
 				FlxG.state=new MenuState(m_swf);
 			}
 		}

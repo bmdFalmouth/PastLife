@@ -11,6 +11,7 @@ package
 		
 		public  function MenuState(m : MovieClip=null) {
 			super();
+			
 			if ( m != null) {
 				try {
 				FlxG.stage.removeChild(m); 
@@ -35,10 +36,10 @@ package
 			super.update();
 
 			if(FlxG.mouse.justPressed())
-				FlxG.state=new PlayState(1);
+				FlxG.state=new PlayState(0);
 			
 			if (FlxG.keys.any()) {
-				FlxG.state=new PlayState(1);
+				FlxG.state=new PlayState(0);
 				
 			}
 		}
