@@ -82,13 +82,8 @@ package
 		{
 			super.update();
 			
-			if(FlxG.mouse.justPressed())
-				FlxG.state=new MenuState(null);	
-			
-			if (FlxG.keys.justReleased("ENTER") ) {
-				FlxG.state=new MenuState(null);	
-				
-			}
+			if(FlxG.mouse.justPressed() || FlxG.keys.any())
+				FlxG.switchState(new MenuState(null));	
 		}		
 	}
 }

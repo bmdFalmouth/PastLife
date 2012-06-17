@@ -35,12 +35,8 @@ package
 		{
 			super.update();
 
-			if(FlxG.mouse.justPressed())
-				FlxG.state=new PlayState(0);
-			
-			if (FlxG.keys.any()) {
-				FlxG.state=new PlayState(0);
-				
+			if(FlxG.mouse.justPressed() || FlxG.keys.any()){
+				FlxG.switchState(new PlayState(0));
 			}
 		}
 	}

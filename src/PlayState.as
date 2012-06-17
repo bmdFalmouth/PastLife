@@ -138,17 +138,17 @@ package
 
 			for each(var t:TutorialTrigger in tutorialTriggers)
 			{
-				defaultGroup.remove(t);
+				remove(t);
 			}
 			for each(var tree:Tree in trees)
 			{
 				tree.kill();
-				defaultGroup.remove(tree);
+				remove(tree);
 			}
-			defaultGroup.remove(collisionMap);
-			defaultGroup.remove(player);
-			defaultGroup.remove(exit);
-			defaultGroup.remove(trees);
+			remove(collisionMap);
+			remove(player);
+			remove(exit);
+			remove(trees);
 			
 			tutorialTriggers = new Array(); 
 			trees = new FlxGroup();
@@ -183,20 +183,20 @@ package
 			//endLevel=false;
 			ambientPlayback.loadEmbedded(ambientSound, true);
 			ambientPlayback.play();
-			FlxG.flash.start(0xFFFFFF,1);
+			FlxG.flash(0xFFFFFF,1);
 
 		}
 		
 		public function OnRestartButtonClick():void
 		{
 			
-			FlxG.fade.start(0xFF000000,1,OnResetFadeDone,true);
+			FlxG.fade(0xFF000000,1,OnResetFadeDone,true);
 		}
 		
 		public function OnResetFadeDone():void
 		{
-			FlxG.flash.start();
-			FlxG.state=new PlayState(levelId);
+			FlxG.flash();
+			FlxG.switchState(new PlayState(levelId));
 		}
 		
 		public function OnEndLevel():void
@@ -212,26 +212,26 @@ package
 			if (levelId>levels.length-1)
 			{
 				//fade for second before End screen
-				FlxG.fade.start(0xFFFFFFFF,1,OnEndGame);
+				FlxG.fade(0xFFFFFFFF,1,OnEndGame);
 			}
 			else
 			{
 				//set flag to prevent exit collision being detected multiple times when fading
 				exitTransition = true;
 				//fade for second before summary screen
-				FlxG.fade.start(0xFFFFFFFF,1,switchToSummary);	
+				FlxG.fade(0xFFFFFFFF,1,switchToSummary);	
 			}
 		}
 
 		public function switchToSummary():void
 		{
 			
-			FlxG.state=new SummaryState(levelId, statsTracker);
+			FlxG.switchState(new SummaryState(levelId, statsTracker));
 		}
 		
 		public function OnEndLevelFade():void
 		{
-			FlxG.fade.start(0xFFFFFFFF,1,OnStartFadeDone,true);
+			FlxG.fade(0xFFFFFFFF,1,OnStartFadeDone,true);
 		}
 		
 		
@@ -242,7 +242,7 @@ package
 		
 		public function OnEndGame():void
 		{
-			FlxG.state=new EndGameState(statsTracker);
+			FlxG.switchState(new EndGameState(statsTracker));
 			//FlxG.switchState(new MenuState());	
 		}
 		
@@ -334,8 +334,7 @@ package
 			
 			startEffects();
 			//create button
-			resetBtn = new FlxButton(FlxG.width - 100, FlxG.height - 150, OnRestartButtonClick);
-			resetBtn.loadText(new FlxText(0, 0, 100, "Reset"));
+			resetBtn = new FlxButton(FlxG.width - 100, FlxG.height - 150, "Reset", OnRestartButtonClick);
 			add(resetBtn);
 			
 			
@@ -369,7 +368,7 @@ package
 		// Jon's function!
 		private function startEffects() : void {
 			// FlxG.camera.color = 0xecfbff; // add a light red tint to the camera to differentiate it from the other
-			
+			/*
 			var whitePixel:FlxSprite
 			
 			//Here we actually initialize out emitter
@@ -398,18 +397,18 @@ package
 			//Size has been replaced, we now use the end condition in a loop to dertmine how many particles to spit out.
 			for (var i:int = 0; i < 25; i++) {
 				whitePixel = new FlxSprite();
-				whitePixel.createGraphic(3, 3, 0xFFd9e2e5);
+				whitePixel.makeGraphic(3, 3, 0xFFd9e2e5);
 				whitePixel.visible = false; //Make sure the particle doesn't show up at (0, 0)
 				theEmitter.add(whitePixel);
 				whitePixel = new FlxSprite();
-				whitePixel.createGraphic(2, 2, 0xFFFFFFFF);
+				whitePixel.makeGraphic(2, 2, 0xFFFFFFFF);
 				whitePixel.visible = false;
 				theEmitter.add(whitePixel);
 			}
 			
 			//Now lets set our emitter free.
 			//Params:        Explode, Particle Lifespan, Emit rate(in seconds)
-			theEmitter.start(false, 5, .01);
+			theEmitter.start(false, 5, .01);*/
 
 			fgLetterbox = new FlxSprite(0, 0, FgLetterboxClass);
 			add(fgLetterbox);
@@ -433,10 +432,10 @@ package
 		
 		override public function update():void
 		{
-			FlxU.collide(player, collisionMap);
-			FlxU.overlap(player, trees, climbTree);
-			FlxU.collide(trees, collisionMap);
-			FlxU.overlap(player,pickups,HandlePickUps);
+			FlxG.collide(player, collisionMap);
+			FlxG.overlap(player, trees, climbTree);
+			FlxG.collide(trees, collisionMap);
+			FlxG.overlap(player,pickups,HandlePickUps);
 			
 			for each(var t:TutorialTrigger in tutorialTriggers)
 			{
@@ -493,7 +492,7 @@ package
 			
 			exp = new Explosion(X-75,Y-75);
 			explosions.add(exp);
-			FlxU.overlap(explosions, trees, killThisTree);
+			FlxG.overlap(explosions, trees, killThisTree);
 		}
 
 		
@@ -502,7 +501,7 @@ package
 			dieTree.kill();
 		}
 		
-		override public function render():void 
+		override public function draw():void 
 		{
 			var sacrificeLeft : String = "";
 			
@@ -516,7 +515,7 @@ package
 			
 			sacrificeText.text = "x " + sacrificeLeft;
 						
-			super.render();
+			super.draw();
 		}
 		
 		private function setupPlayer():void

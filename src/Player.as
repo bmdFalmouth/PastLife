@@ -162,8 +162,7 @@ package
 		public function respawnCharacter():void
 		{
 			spawning = false;
-			//alive = true;
-			dead = false;
+			alive = true;
 			
 			solid = true;
 			exists = true;
@@ -173,8 +172,8 @@ package
 			_restart = 0;
 			spawnTimer = 0;
 			//Now need to get default group from state - BMD
-			//FlxG.state.remove(spawnSprite);
-			FlxG.state.defaultGroup.remove(spawnSprite);
+			FlxG.state.remove(spawnSprite);
+			
 		}
 		
 		override public function destroy():void
@@ -189,7 +188,7 @@ package
 			var stats : StatsTracker = (FlxG.state as PlayState).statsTracker;
 			
 			//game restart timer
-			if(dead)
+			if(!alive)
 			{
 				_restart += FlxG.elapsed;
 				if(_restart > 1)
@@ -201,7 +200,7 @@ package
 			if (_map!=null){
 				if (this.y>_map.height)
 				{
-					dead=true;	
+					alive=false;	
 				}
 			}
 			
@@ -270,12 +269,8 @@ package
 					createSpawn();
 					
 					//This has been replace with the two lines below - BMD
-					//FlxG.camera.shake(0.005,0.35);
-					//FlxG.camera.flash(0xffffeba2,0.35);	
-					
-					FlxG.quake.start(0.005, 0.35);
-					FlxG.flash.start(0xffffeba2, 0.35);
-					
+					FlxG.camera.shake(0.005,0.35);
+					FlxG.camera.flash(0xffffeba2,0.35);	
 					stats.increment("spawn_points");
 				}
 			}
@@ -310,12 +305,9 @@ package
 						treesLeft--;
 						createTree();
 						
-						//Been replaced with functions on FLXG -BMD
-						//FlxG.camera.shake(0.005,0.35);
-						//FlxG.camera.flash(0xFFFFFFFF, 0.35);	
-						
-						FlxG.quake.start(0.005, 0.35);
-						FlxG.flash.start(0xFFFFFFFF, 0.35);
+						FlxG.camera.shake(0.005,0.35);
+						FlxG.camera.flash(0xFFFFFFFF, 0.35);	
+
 						
 						FlxG.play(createTreeSound);
 						
@@ -326,12 +318,10 @@ package
 						explosionsLeft--;
 						explode(3);
 						
-						//Been replaced with functions on FLXG -BMD
-						//FlxG.camera.shake(0.005,0.35);
-						//FlxG.camera.flash(0xFFFFFFFF, 0.35);	
 						
-						FlxG.quake.start(0.005, 0.35);
-						FlxG.flash.start(0xFFFFFFFF, 0.35);    
+						FlxG.camera.shake(0.005,0.35);
+						FlxG.camera.flash(0xFFFFFFFF, 0.35);	
+
 						
 						FlxG.play(explosionSound);
 						
@@ -345,11 +335,8 @@ package
 							createTiles();
 							
 							//Been replaced with functions on FLXG - BMD
-							//FlxG.camera.shake(0.005,0.35);
-							//FlxG.camera.flash(0xFFFFFFFF, 0.35);	
-						
-							FlxG.quake.start(0.005, 0.35);
-							FlxG.flash.start(0xFFFFFFFF, 0.35);
+							FlxG.camera.shake(0.005,0.35);
+							FlxG.camera.flash(0xFFFFFFFF, 0.35);	
 							
 							//BUG - the sound of creating platform might need to change as it
 							//sounds like a footstep at the end.
@@ -434,9 +421,7 @@ package
 			_map.setTile((x-tileSize) / tileSize, ((y-(tileSize*2)) / tileSize) + 1, EMPTY_TILE);
 			
 			kill();
-			//Been replaced with functions on FLXG
-			//FlxG.camera.shake(0.005,0.35);		
-			FlxG.quake.start(0.005, 0.35);		
+			FlxG.camera.shake(0.005,0.35);		
 			
 			
 			// FlxG.camera.flash(0xffd8eba2,0.35);
@@ -455,7 +440,7 @@ package
 			if (frameNo == 14)
 			{
 				actualCreateTiles();
-				FlxG.state.defaultGroup.remove(creation);
+				FlxG.state.remove(creation);
 			}
 				
 		}
@@ -494,10 +479,7 @@ package
 			_map.setTile((createX+(tileSize *2)) / tileSize,  platformHeight, FLAT_TILE);
 			_map.setTile((createX-(tileSize *2)) / tileSize, platformHeight, FLAT_TILE);
 			
-			
-			FlxG.quake.start(0.001,0.35);
-			
-			//FlxG.camera.shake(0.001,0.35);
+			FlxG.camera.shake(0.001,0.35);
 			//FlxG.camera.flash(0xffffffa2,0.35);
 			
 		}
@@ -582,7 +564,7 @@ package
 					treeClimbSprite.visible=false;
 					this.visible=true;
 					treeClimbSprite.kill();
-					FlxG.state.defaultGroup.remove(treeClimbSprite);
+					FlxG.state.remove(treeClimbSprite);
 				}
 			
 		}
