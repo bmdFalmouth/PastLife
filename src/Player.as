@@ -56,6 +56,10 @@ package
 		public function Player(X:int,Y:int)
 		{	
 			super(X, Y);
+			treeClimbSprite = new TreeClimbSprite(0, 0);
+			FlxG.state.add(treeClimbSprite);
+			treeClimbSprite.visible = false;
+			
 			tileSize = 32;
 			spawnX = closestTilePos(X);
 			spawnY = closestTilePos(Y) + 31;
@@ -268,7 +272,7 @@ package
 					respawnsLeft--;
 					createSpawn();
 					
-					//This has been replace with the two lines below - BMD
+					
 					FlxG.camera.shake(0.005,0.35);
 					FlxG.camera.flash(0xffffeba2,0.35);	
 					stats.increment("spawn_points");
@@ -521,31 +525,19 @@ package
 			keyboardInputEnabled = false;
 			
 			treeToClimb = tree;
+
 			
-			treeClimbSprite=new TreeClimbSprite(0,0);
 			treeClimbSprite.x=treeToClimb.x;
-			treeClimbSprite.y=treeToClimb.y-64;
+			treeClimbSprite.y = treeToClimb.y - 64;
+			treeClimbSprite.visible = true;
 			
-			FlxG.state.add(treeClimbSprite);
-			//treeToClimb.visible=false;
 			
 			treeClimbSprite.addAnimationCallback(treeAnimationDone);
 			
-			this.visible=false;
+			this.visible = false;
+			this.active = false;
+			treeToClimb.active = false;
 			treeClimbSprite.play("Climb");
-			
-			
-			//Comment out put back in animation is feckered
-			//play("climbTree");
-			
-			//when animation finished teleport to top of tree
-			//solid = false;
-			//treeToClimb.canopy.solid = false;
-			//y = treeToClimb.y - this.height - 20 ;
-			//treeToClimb.canopy.solid = true;
-			//solid = true;
-		//	treeToClimb.y;
-			//keyboardInputEnabled = true;
 			
 		}
 		
@@ -553,18 +545,14 @@ package
 		{
 				if (frameNo==7)
 				{
-					
-					//treeToClimb.visible=true;
-
-				
-				//	y = treeToClimb.y - this.height - 20 ;
-			
-					//	treeToClimb.y;
-					x = x + 32;
+					//treeClimbSprite.active = false;
 					treeClimbSprite.visible=false;
-					this.visible=true;
-					treeClimbSprite.kill();
-					FlxG.state.remove(treeClimbSprite);
+					
+					y = treeToClimb.y-(this.height+treeToClimb.canopy.health+5);
+					x = treeToClimb.x + ((treeToClimb.width - width) / 2) ;
+					this.active = true;
+					this.visible = true;
+					treeToClimb.active = true;
 				}
 			
 		}

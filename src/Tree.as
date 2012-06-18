@@ -15,10 +15,11 @@ package
 			this.alpha = 0.4;
 			
 			//bounding box tweaks
-			width = 32;
+			width = 64;
 			height = 128;
 			offset.x = 1;
 			offset.y = 1;
+			
 			
 			//immovable = true;
 			
@@ -32,11 +33,16 @@ package
 			
 			
 			//add collisionalble canopy, add to groups in playState
-			/*canopy =new FlxSprite(X+10,Y-5);
-			canopy.width = 32;
+			canopy = new FlxSprite(X, Y-5);
+			canopy.makeGraphic(64, 5);
+			canopy.width = 64;
 			canopy.height = 5;
 			canopy.immovable = true;
-			(FlxG.state as PlayState).canopies.add(canopy);*/
+			canopy.visible = false;
+			
+			(FlxG.state as PlayState).canopies.add(canopy);
+			(FlxG.state as PlayState).add(canopy);
+			allowCollisions = FlxObject.LEFT | FlxObject.RIGHT|FlxObject.DOWN;
 			
 		}
 		

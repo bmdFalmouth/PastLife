@@ -248,7 +248,8 @@ package
 		
 		override public function create():void
 		{
-			
+			//Uncomment for visual debug
+			//FlxG.visualDebug = true;
 			levels=new Array();
 			tutorialTriggers = new Array(); 
 			trees = new FlxGroup();
@@ -435,7 +436,8 @@ package
 			FlxG.collide(player, collisionMap);
 			FlxG.overlap(player, trees, climbTree);
 			FlxG.collide(trees, collisionMap);
-			FlxG.overlap(player,pickups,HandlePickUps);
+			FlxG.overlap(player, pickups, HandlePickUps);
+			FlxG.collide(player, canopies);
 			
 			for each(var t:TutorialTrigger in tutorialTriggers)
 			{
@@ -471,10 +473,8 @@ package
 			if (player.y > treeToClimb.y -5)
 			{
 				FlxG.log("this is updating y");
-				player.y = treeToClimb.y-64;
-				FlxG.log("this is updating before " + player.x);
-				player.x = treeToClimb.x+32;
-				FlxG.log("this is updating after" + player.x);
+				
+				//player.x = treeToClimb.x+32;
 				//BUG: This leaves the last animation of the tree, which has the character at the top
 				player.climbTree(treeToClimb);
 			}
