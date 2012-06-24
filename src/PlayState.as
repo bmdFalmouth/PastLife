@@ -318,8 +318,9 @@ package
 			/* add foreground stuff */
 			fgInverseVignette = new FlxSprite(0, 0, FgInverseVignetteClass);
 			fgInverseVignette.blend = "screen";
-			fgInverseVignette.alpha = 1;
+			fgInverseVignette.alpha = 1.0;
 			add(fgInverseVignette);
+			fgInverseVignette.visible = true;
 			
 			
 			// initialise stats
@@ -521,6 +522,8 @@ package
 		private function setupPlayer():void
 		{
 			player.setTileMap(collisionMap);
+			player.kill();
+			
 		}
 		
 		public function addTree(tree:Tree):void
