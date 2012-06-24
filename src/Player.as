@@ -237,35 +237,6 @@ package
 				y -= 1;
 				velocity.y = -jumpSpeed;
 			}
-			/*
-			if(FlxG.keys.justPressed("Q"))
-			{
-				if ( explosionsLeft > 0 ) {
-					explosionsLeft--;
-					explode(4);
-					
-					FlxG.camera.shake(0.005,0.35);
-					FlxG.camera.flash(0xffd8eba2,0.35);	    
-					FlxG.play(explosionSound, 1.0);
-					stats.increment("explosions");
-				}
-			}
-			if(FlxG.keys.justPressed("W"))
-			{
-				if (canCreate())
-				{
-					if ( platformsLeft > 0 ) {
-						platformsLeft --;
-						createTiles();
-						
-						FlxG.camera.shake(0.005,0.35);
-						FlxG.camera.flash(0xffd8eba2,0.35);	   
-						
-						stats.increment("platforms");
-					}
-					
-				}
-			}*/
 			if(FlxG.keys.justPressed("E"))
 			{
 				if ( respawnsLeft > 0 ) {
@@ -278,21 +249,8 @@ package
 					stats.increment("spawn_points");
 				}
 			}
-			/*
-			if(FlxG.keys.justPressed("R"))
-			{
-				if ( treesLeft > 0 ) {
-					treesLeft--;
-					createTree();
-					
-					FlxG.camera.shake(0.005,0.35);
-					FlxG.camera.flash(0x11ff11a2,0.35);	
-	
-					stats.increment("trees");
-				}
-			}*/
 			
-			if ( FlxG.keys.justPressed("TAB")  /*|| FlxG.keys.justPressed("TAB")*/) {
+			if ( FlxG.keys.justPressed("TAB")  || FlxG.keys.justPressed("SHIFT")) {
 				currentSacrifice ++;
 				if ( currentSacrifice > (sacrifices.length-1)) {
 					currentSacrifice = 0;
@@ -394,6 +352,7 @@ package
 			var explosion:Explode;
 			explosion = new Explode((x-59), (y-43));
 			FlxG.state.add(explosion);
+			
 			//kill();
 			explosion.play("grow");
 			
@@ -424,7 +383,7 @@ package
 			_map.setTile((x-tileSize) / tileSize, ((y+(tileSize*2)) / tileSize) + 1, EMPTY_TILE);
 			_map.setTile((x-tileSize) / tileSize, ((y-(tileSize*2)) / tileSize) + 1, EMPTY_TILE);
 			
-			kill();
+			
 			FlxG.camera.shake(0.005,0.35);		
 			
 			
@@ -436,7 +395,8 @@ package
 				//_gibs.start(true,5,0,50);
 				_gibs.start(true, 5, 50);
 			}
-			(FlxG.state as PlayState).killTrees(x,y);
+			(FlxG.state as PlayState).killTrees(x, y);
+			kill();
 		}
 		
 		public function tilesCreated(name:String, frameNo:uint, frameInd:uint):void
@@ -497,7 +457,6 @@ package
 			
 			creation.addAnimationCallback(tilesCreated);
 			creation.play("create");
-			
 			kill();
 			
 			
@@ -516,8 +475,8 @@ package
 			tree = new Tree(x, y-64);
 			(FlxG.state as PlayState).addTree(tree);
 			FlxG.state.add(tree);
-			kill();
 			tree.play("grow");
+			kill();
 		}
 
 		public function climbTree(tree:Tree):void
