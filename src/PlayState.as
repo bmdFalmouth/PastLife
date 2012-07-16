@@ -324,7 +324,7 @@ package
 			
 			
 			// initialise stats
-			statsTracker  = new StatsTracker();
+			statsTracker  = new GAStatsTracker();
 			statsTracker.trackItem("explosions");
 			statsTracker.trackItem("platforms");
 			statsTracker.trackItem("spawn_points");
@@ -454,6 +454,7 @@ package
 				
 			if(player.overlaps(exit) && !exitTransition)
 			{
+				
 				OnEndLevel();
 			}
 			
@@ -473,10 +474,6 @@ package
 			player.play("climbTree");
 			if (player.y > treeToClimb.y -5)
 			{
-				FlxG.log("this is updating y");
-				
-				//player.x = treeToClimb.x+32;
-				//BUG: This leaves the last animation of the tree, which has the character at the top
 				player.climbTree(treeToClimb);
 			}
 		}

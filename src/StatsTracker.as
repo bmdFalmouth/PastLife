@@ -3,18 +3,17 @@ package
 	import com.adobe.serialization.json.JSON;
 	
 	import flash.display.Sprite;
-	import flash.net.URLRequest;
-	import flash.net.URLVariables;
-	import flash.net.URLLoader;
+
 	
 	import org.flixel.*;
 	
+
 	
 	public class StatsTracker extends Sprite
 	{
-		private var trackedItems : Array;
+		protected var trackedItems : Array;
 		//Added property to enable/disable tracking of stats - BMD 16/6/12
-		private var _trackStats:Boolean = false;
+		protected var _trackStats:Boolean = false;
 		
 		
 		public function get trackStats():Boolean
@@ -128,34 +127,7 @@ package
 		}
 		
 		public function submitStats() : void {
-			if (_trackStats){
-				var submitVars : String = serialize();
-				var url : String = "http://falconhoof.heroku.com/api/v1/report";
-			
-				var submitData : URLVariables = new URLVariables();
-			
-				for ( var i : Number = 0; i < trackedItems.length; i++) {
-					var object : Object = trackedItems[i];
-					submitData[object.item] = object.value;
-				}
 
-/*
-curl -d "username=davidfarrell&email=dfarrell@davidlearnsgames.com&score=10&explosions=4&death=5&trees=4" http://falconhoof.heroku.com/api/v1/report
-			*/
-				//BUG - The URL might be an issue - BMD 16/06/12
-				var request:URLRequest = new URLRequest(url);
-				request.method = "POST";
-				request.data = submitData;
-				FlxG.log("sendToURL: " + request.url + "?" + request.data);
-				try {
-					var urlLoader : URLLoader = new URLLoader(request);
-					//urlLoader.addEventListener("complete", receiveUserScore, false, 0, true);
-				}
-				catch (e:Error) {
-					// handle error here
-					FlxG.log ("error! id:[" + e.errorID + "] name["+e.name+"] message["+e.message+"] stack["+e.getStackTrace+"]");
-				}
-			}
 			
 			
 		}
